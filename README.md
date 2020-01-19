@@ -1,8 +1,8 @@
 # Summary
 This is a distributed LRU cache with time expiration. It is implemented using a hash ring with consistent hashing and a doubly-linked list in Python.
-<br>
+<br><br>
 The cache maps server nodes (servers) to roughly equidistant points in a circle. When the cache receives a get request, the key is hashed and placed onto the same circle. The closest server node (clockwise) is chosen. If the cache contains an entry corresponding to that key, it will be on that server, so the cache routes the get request to this server node. The server node iterates through a doubly-linked list containing all of its data nodes for a matching key. If one is found (cache hit), the corresponding value is returned and the data node is moved to the head. If there's no match (cache miss), the server node uses a predefined load function to load the corresponding data into the cache.
-<br>
+<br><br>
 Note: expired cache entries (data nodes whose time since last access has exceeded the value specified in its configuration) are only removed when a get request is made to a server with expired entries and the key is not found before reaching an expired entry.
 
 ## The Challenge
@@ -29,27 +29,27 @@ Write a geo distributed LRU (least recently used) cache with time expiration. It
 * The cache can expire, and this time to expiration can be customized for each server.
 
 # Example
-'''python
-from lru\_cache import LRUCache
+```python
+from lru_cache import LRUCache
 
-def load\_function(key):
+def load_function(key):
 	'''
 	placeholder
 	'''
 	return key
 
 TIMEOUT = 3  # 3 seconds
-MAX\_SIZE = 10  # 10 items
+MAX_SIZE = 10  # 10 items
 
-cache = LRUCache(load\_function)
-cache.add\_server('a', MAX\_SIZE, TIMEOUT)
-cache.add\_server('b', MAX\_SIZE, TIMEOUT)
+cache = LRUCache(load_function)
+cache.add_server('a', MAX_SIZE, TIMEOUT)
+cache.add_server('b', MAX_SIZE, TIMEOUT)
 
 for i in range(30)
 	print(cache.get(i))
 
-cache.remove\_server('a')
-'''
+cache.remove_server('a')
+```
 
 For more sample usages, see client.py.
 
